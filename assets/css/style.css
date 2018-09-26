@@ -42,4 +42,49 @@ body {
     left: 0;
     z-index: auto;
     background: linear-gradient(#333, black);
+    opacity: 0.7;
+}
+
+.jumbotron .background-image {
+    height: 100%;
+    background-image: url("../images/newspaper.jpg");
+    background-size: cover;
+}
+
+.jumbotron .caption {
+    position: absolute;
+    top: 30%;
+    width: 100%;
+    text-align: center;
+}
+
+.jumbotron .caption h1,
+.jumbotron .caption p {
+    color: white;
+}
+
+.jumbotron h1 {
+    font-size: 80px;
+    font-weight: 800;
+}
+
+.jumbotron p {
+    font-size: 30px;
+}
+
+.article-container {
+    padding-bottom: 25px;
+}
+
+.card {
+    border-radius: 0;
+    box-shadow: 3px 3px 20px lightslategray;
+    margin: 20px 0;
+}
+
+.card .card-header {
+    background-color: #2196f3;
+    position: relative;
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
