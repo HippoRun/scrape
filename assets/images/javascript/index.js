@@ -119,4 +119,4 @@ function handleArticleClear() {
         initPage();
     });
 }
-};)
+});
