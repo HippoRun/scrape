@@ -10,11 +10,6 @@ router.get("/", function(req, res) {
     res.redirect("/articles");
 });
 
-// Get Home Page
-router.get("/", function(req, res){
-        res.redirect("articles");
-});
-
 // Get route from scraping The Denver Channel
 router.get("/scrape", function(req, res) {
 // Define website to scrape.
@@ -89,7 +84,7 @@ router.put("/articles/:id", function(req, res){
 // Route for grabbing a specific Article by id, populuate it with it's note
 router.get("/articles/:id", function(req, res) {
 // using the id passed in the id parameter, prepare a query that finds the matching one in our db
-db.ARticle.findOne({ _id: req.params.id })
+db.Article.findOne({ _id: req.params.id })
 
 // and populate all of the notes assiciated with it.
 .populate("note")
@@ -112,6 +107,11 @@ db.Note.create(req.body)
 // { new: true } tells the query that we want it to return the updated user -- it returns the original by default
 // Since our mongoose query returns a promise, we can chain another '.then' which recieves the result of the query
 return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id}, { new: true});
+        })
+        .then(function(dbArticle){
+
+// if we were able to succesfully update an ARticle, send it back to the client
+        res.redirect("/articles/" + req.params.id);
         })
         .catch(function(err){
 // If an error occurred, send it to the client

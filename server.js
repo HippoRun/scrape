@@ -26,7 +26,7 @@ app.use(logger("dev"));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', Router);
 
-// User body-parser for handling form submissions
+// Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({ extended: true }));
 // Use express.static to serve the public folder as static directory
 app.use(express.static("public"));
@@ -38,7 +38,7 @@ mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Start the server
-app.listen(PORT, function(){
+app.listen(PORT, function() {
     console.log("App running on port " + PORT + "!");
 });
 
