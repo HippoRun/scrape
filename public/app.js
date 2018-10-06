@@ -1,5 +1,5 @@
 // Load saved articles
-function loadArticles(saved)
+function loadArticles(saved) {
     let route = '/articles';
     if (saved) {
         route += '?saved=true';
