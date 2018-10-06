@@ -10,6 +10,11 @@ router.get("/", function(req, res) {
     res.redirect("/articles");
 });
 
+// Get Home Page
+router.get("/", function(req, res){
+        res.redirect("articles");
+});
+
 // Get route from scraping The Denver Channel
 router.get("/scrape", function(req, res) {
 // Define website to scrape.
@@ -22,13 +27,13 @@ router.get("/scrape", function(req, res) {
 // Saving result as empty array
         let result = {};
 // Saving properties of results
-        result.title =$(this)
+        result.title = $(this)
         .children("header").children("h1").children("a").text();
         result.link = $(this)
-        .children("header").children("h1").children('a').attr("href")
+        .children("header").children("h1").children("a").attr("href")
 
         result.paragraph = $(this)
-        .children("dive.item_content").children("div.excerpt").children("div.excetp").children("p").text();
+        .children("dive.item_content").children("div.excerpt").children("p").text();
 
 // Create a new Article using the 'result' object built from scraping
         db.Article.create(result)
@@ -41,18 +46,17 @@ router.get("/scrape", function(req, res) {
             return res.json(err);
         });
         });
-    res.send("Scrape Complete");
     res.redirect("articles");
     });
 });
 
 // Route for getting all Articles from the db
-router.get("/articles", function(req, res) {
+router.get("/savedArticles", function(req, res) {
 // Grab every document in the Articles collection
     db.Article.find({})
         .then(function(dbArticle){
 // If we were able to successfully find Articles, send them back to the client
-res.render("index", {data: dbArticle});
+res.render("savedArticles", {data: dbArticle});
         })
         .catch(function(err){
 // If an error occurred, send it to the client
@@ -60,39 +64,58 @@ res.render("index", {data: dbArticle});
         });
 });
 
-// Route for grabbing a specific by id, populate it with it's note
-router.get("/articles/:id", function(req, res) {
-// Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-    db.Article.findOne({ _id: req.params.id })
-// ... and populate all of the notes associated with is
-    .populate("note")
+// Route for grabbing all Articles from db 
+router.get("/articles", function(req, res) {
+
+// Grab every document in Article collection
+    db.Article.find({})
     .then(function(dbArticle){
-// If we were able to  successfully find an Article with the given id, send it back to the client
-        res.json(dbArticle);
+// If we were able to successfully find Articles, send them back to the client
+res.render("index", {data: dbArticle});
     })
     .catch(function(err) {
-// If an error occurred, send it to the client
-    res.json(err);
+// if error occurred, send it to client
+        res.json(err);
     });
 });
 
-// Route for saving/updating an ARticle's associate Note
-router.post("/articles/:id", function(req, res) {
-// Create a new note and pass the req.body to the entry
-    db.Note.create(req.body)
-        .then(function(dbNote) {
-// If a Note was created successfully, find one Article with an '_id' equal to 'req.params.id'. Update the Article to be associated with the new Note
-// { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-// Since our mongoose query returns a promise, we can chain another '.then' which receives the result of the query
-return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+router.put("/articles/:id", function(req, res){
+        db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: true})
+        .then(function(dbArticleSaved) {
+                console.log("Saved Article: ", dbArticleSaved);
         })
-        .then(function(dbArticle) {
-// If we were able to successfully update an Article, send it back to the client
-        res.json(dbArticle);
-        })
-        .catch(function(err) {
+});
+
+// Route for grabbing a specific Article by id, populuate it with it's note
+router.get("/articles/:id", function(req, res) {
+// using the id passed in the id parameter, prepare a query that finds the matching one in our db
+db.ARticle.findOne({ _id: req.params.id })
+
+// and populate all of the notes assiciated with it.
+.populate("note")
+.then(function(dbArticle) {
+// If we were able to successfully find an Article with the given id, send it back to the client
+res.json(dbArticle);
+})
+.catch(function(err){
 // If an error occurred, send it to the client
-        res.json(err);
+res.json(err);      
+});
+});
+
+// Route for saving/updating an Article's associated Note
+router.post("/articles/:id", function(req, res){
+// Create a new note and pass the req.body to the entry
+db.Note.create(req.body)
+        .then(function(dbNote) {
+// If a note was created successfully, find one ARticle with an "id" equal to "req.params.id". Update the Article to be associated with the new Note
+// { new: true } tells the query that we want it to return the updated user -- it returns the original by default
+// Since our mongoose query returns a promise, we can chain another '.then' which recieves the result of the query
+return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id}, { new: true});
+        })
+        .catch(function(err){
+// If an error occurred, send it to the client
+                res.json(err);
         });
 });
 
