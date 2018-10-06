@@ -23,7 +23,7 @@ app.set("view engine", "handlebars");
 // Configure middleware
 // Use morgan logger for logging requests
 app.use(logger("dev"));
-app.use(express.static(path.join(_dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', Router);
 
 // User body-parser for handling form submissions
