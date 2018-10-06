@@ -32,7 +32,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 //Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/mongoscraperdb", { userNewUrlParser: true});
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoscraperdb";
+
+mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Start the server
 app.listen(PORT, function(){
