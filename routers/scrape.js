@@ -8,7 +8,7 @@ var db = require('../models');
 app.get("/newArticles", function(req, res){
  
   var options = {
-      uri: 'https://www.newsarama.com/',
+      uri: 'https://www.9news.com/',
       transform: function (body) {
       return cheerio.load(body);
     }
@@ -34,7 +34,7 @@ app.get("/newArticles", function(req, res){
             if(!savedHeadline.includes(headline)){
               articleArray.push({
                 headline: headline,
-                Url: 'https://www.newsarama.com'+ Url,
+                Url: 'https://www.9news.com/'+ Url,
                 summary: summary
               });
             }
