@@ -8,7 +8,7 @@ var db = require('../models');
 app.get("/newArticles", function(req, res){
  
   var options = {
-      uri: 'https://www.9news.com/',
+      uri: 'https://news.google.com/?hl=en-US&gl=US&ceid=US:en',
       transform: function (body) {
       return cheerio.load(body);
     }
@@ -23,7 +23,7 @@ app.get("/newArticles", function(req, res){
         
         var articleArray = [];
           
-        $('p.post-desc').each(function(i, element){
+        $('a.VDXfz').each(function(i, element){
           var headline = $(element).children().attr("title");
           var Url = $(element).children().attr("href");
           var summary = $(element).text().trim();
@@ -34,7 +34,7 @@ app.get("/newArticles", function(req, res){
             if(!savedHeadline.includes(headline)){
               articleArray.push({
                 headline: headline,
-                Url: 'https://www.9news.com/'+ Url,
+                Url: 'https://news.google.com/?hl=en-US&gl=US&ceid=US:en'+ Url,
                 summary: summary
               });
             }
