@@ -6,7 +6,7 @@
   --header-height: 30em;
 }
 
-body {
+/* body {
   background-image: url('../img/background.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -16,7 +16,7 @@ body {
   font-family: arial;
   margin: 0;
   padding: 0;
-}
+} */
 
 a:active {
   outline: none;
