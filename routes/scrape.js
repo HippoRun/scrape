@@ -8,7 +8,7 @@ var db = require('../models');
 app.get("/newArticles", function(req, res){
  
   var options = {
-      uri: 'https://news.google.com/?hl=en-US&gl=US&ceid=US:en',
+      uri: 'https://www.newsarama.com/',
       transform: function (body) {
       return cheerio.load(body);
     }
@@ -23,7 +23,7 @@ app.get("/newArticles", function(req, res){
         
         var articleArray = [];
           
-        $('a.VDXfz').each(function(i, element){
+        $('p.post-desc').each(function(i, element){
           var headline = $(element).children().attr("title");
           var Url = $(element).children().attr("href");
           var summary = $(element).text().trim();
@@ -34,7 +34,7 @@ app.get("/newArticles", function(req, res){
             if(!savedHeadline.includes(headline)){
               articleArray.push({
                 headline: headline,
-                Url: 'https://news.google.com/?hl=en-US&gl=US&ceid=US:en'+ Url,
+                Url: 'https://www.newsarama.com'+ Url,
                 summary: summary
               });
             }
